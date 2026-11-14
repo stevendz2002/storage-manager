@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "start": "ng serve",
     "build": "ng build ngx-storage-manager",
     "test": "ng test ngx-storage-manager --watch=false",
     "coverage": "ng test ngx-storage-manager --watch=false --coverage",

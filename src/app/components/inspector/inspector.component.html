@@ -1,0 +1,94 @@
+<div class="inspector-layout">
+  <div class="inspector-actions-bar">
+    <div>
+      <h2>Inspector de Almacenamiento</h2>
+      <p class="text-muted">Claves activas administradas por la librería en el navegador</p>
+    </div>
+    <button type="button" class="btn btn-secondary" (click)="service.refreshInspector()">
+      Actualizar
+    </button>
+  </div>
+
+  <!-- LocalStorage Items -->
+  <section class="card inspector-card">
+    <div class="card-header">
+      <div class="header-with-badge">
+        <h3>LocalStorage (con prefijo <code>ngxsm:</code>)</h3>
+        <span class="badge badge-dark">{{ service.localItems().length }} elementos</span>
+      </div>
+    </div>
+
+    @if (service.localItems().length === 0) {
+      <p class="empty-table-text">No hay claves de ngx-storage-manager almacenadas en LocalStorage.</p>
+    } @else {
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Clave de la App</th>
+              <th>Clave Real en Browser</th>
+              <th>Valor Almacenado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of service.localItems(); track item.fullKey) {
+              <tr>
+                <td><span class="key-pill">{{ item.key }}</span></td>
+                <td><code>{{ item.fullKey }}</code></td>
+                <td class="value-cell"><code>{{ item.value }}</code></td>
+                <td class="actions-cell">
+                  <button
+                    type="button"
+                    class="btn-table-action"
+                    (click)="loadItem(item)"
+                    title="Cargar en Playground">
+                    Cargar
+                  </button>
+                  <button
+                    type="button"
+                    class="btn-table-action btn-delete"
+                    (click)="deleteItem(item.key)"
+                    title="Eliminar">
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+
+  <!-- CacheStorage Items -->
+  <section class="card inspector-card">
+    <div class="card-header">
+      <div class="header-with-badge">
+        <h3>CacheStorage (Cache API)</h3>
+        <span class="badge badge-blue">{{ service.cacheItems().length }} elementos</span>
+      </div>
+    </div>
+
+    @if (service.cacheItems().length === 0) {
+      <p class="empty-table-text">No hay entradas guardadas en la caché configurada o la Cache API está vacía.</p>
+    } @else {
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Identificador en Caché</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (entry of service.cacheItems(); track entry) {
+              <tr>
+                <td><code>{{ entry }}</code></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+</div>

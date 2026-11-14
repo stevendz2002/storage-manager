@@ -1,0 +1,44 @@
+<header class="showcase-header">
+  <div class="header-brand">
+    <div class="brand-badge">NGX</div>
+    <div>
+      <div class="brand-title-row">
+        <h1>ngx-storage-manager</h1>
+        <span class="badge badge-dark">v0.0.0</span>
+        <span class="badge badge-blue">Angular 21 Zoneless</span>
+      </div>
+      <p class="brand-subtitle">Showcase interactivo de adaptadores unificados (LocalStorage y CacheStorage)</p>
+    </div>
+  </div>
+
+  <nav class="header-nav" aria-label="Navegación del showcase">
+    <button
+      type="button"
+      class="nav-tab"
+      [class.active]="service.activeTab() === 'playground'"
+      (click)="service.setActiveTab('playground')">
+      Playground
+    </button>
+    <button
+      type="button"
+      class="nav-tab"
+      [class.active]="service.activeTab() === 'demos'"
+      (click)="service.setActiveTab('demos')">
+      Demos
+    </button>
+    <button
+      type="button"
+      class="nav-tab"
+      [class.active]="service.activeTab() === 'inspector'"
+      (click)="service.setActiveTab('inspector')">
+      Inspector ({{ service.totalStoredCount() }})
+    </button>
+    <button
+      type="button"
+      class="nav-tab"
+      [class.active]="service.activeTab() === 'code'"
+      (click)="service.setActiveTab('code')">
+      Guía de Uso
+    </button>
+  </nav>
+</header>
