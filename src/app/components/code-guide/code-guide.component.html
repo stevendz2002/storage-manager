@@ -1,0 +1,59 @@
+<div class="code-guide-layout">
+  <section class="card guide-card">
+    <h2>1. Configuración de Proveedores (<code>app.config.ts</code>)</h2>
+    <p class="text-muted">Registra el adaptador de Cache Storage opcionalmente con un nombre personalizado:</p>
+    <pre class="code-block"><code>// app.config.ts
+import &#123; ApplicationConfig, provideZonelessChangeDetection &#125; from '&#64;angular/core';
+import &#123; provideCacheStorage &#125; from 'ngx-storage-manager';
+
+export const appConfig: ApplicationConfig = &#123;
+  providers: [
+    provideZonelessChangeDetection(),
+    provideCacheStorage('mi-cache-personalizada'), // Opcional: define el bucket de caché
+  ],
+&#125;;</code></pre>
+  </section>
+
+  <section class="card guide-card">
+    <h2>2. Inyección y Uso en Componentes / Servicios</h2>
+    <p class="text-muted">Inyecta <code>StorageManagerService</code> y utiliza sus métodos asíncronos tipados:</p>
+    <pre class="code-block"><code>// mi-componente.ts
+import &#123; Component, inject &#125; from '&#64;angular/core';
+import &#123; StorageManagerService &#125; from 'ngx-storage-manager';
+
+interface PerfilUsuario &#123;
+  id: number;
+  nombre: string;
+&#125;
+
+&#64;Component(&#123; ... &#125;)
+export class MiComponente &#123;
+  private readonly storage = inject(StorageManagerService);
+
+  async guardar(): Promise&lt;void&gt; &#123;
+    // Guardar en LocalStorage
+    await this.storage.set('local', 'perfil', &#123; id: 1, nombre: 'Valentina' &#125;);
+
+    // Guardar en CacheStorage
+    await this.storage.set('cache', 'datos_offline', &#123; version: 2 &#125;);
+  &#125;
+
+  async leer(): Promise&lt;void&gt; &#123;
+    const usuario = await this.storage.get&lt;PerfilUsuario&gt;('local', 'perfil');
+    console.log(usuario?.nombre); // 'Valentina'
+  &#125;
+
+  async comprobar(): Promise&lt;void&gt; &#123;
+    const existe = await this.storage.has('local', 'perfil');
+  &#125;
+
+  async eliminar(): Promise&lt;void&gt; &#123;
+    await this.storage.remove('local', 'perfil');
+  &#125;
+
+  async limpiarTodo(): Promise&lt;void&gt; &#123;
+    await this.storage.clear('local'); // Limpia solo las claves 'ngxsm:*'
+  &#125;
+&#125;</code></pre>
+  </section>
+</div>
