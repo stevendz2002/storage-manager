@@ -1,0 +1,198 @@
+<div class="playground-layout">
+  <!-- Left Panel: Controls -->
+  <section class="card panel-controls">
+    <div class="card-header">
+      <div>
+        <h2>Configuración de Operación</h2>
+        <p class="text-muted">Prueba interactiva de los métodos de <code>StorageManagerService</code></p>
+      </div>
+    </div>
+
+    <!-- Backend Selector -->
+    <div class="form-group">
+      <label class="form-label">Backend de Almacenamiento:</label>
+      <div class="backend-selector">
+        <button
+          type="button"
+          class="backend-option"
+          [class.selected]="service.selectedBackend() === 'local'"
+          (click)="service.setBackend('local')">
+          <div>
+            <strong>LocalStorage</strong>
+            <span class="backend-desc">Namespace propio (<code>ngxsm:</code>)</span>
+          </div>
+        </button>
+        <button
+          type="button"
+          class="backend-option"
+          [class.selected]="service.selectedBackend() === 'cache'"
+          (click)="service.setBackend('cache')">
+          <div>
+            <strong>CacheStorage</strong>
+            <span class="backend-desc">Cache API nativa en browser</span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Presets -->
+    <div class="form-group">
+      <label class="form-label">Cargar Ejemplos Rápidos:</label>
+      <div class="presets-row">
+        <button type="button" class="btn-preset" (click)="service.loadPreset('user')">Perfil</button>
+        <button type="button" class="btn-preset" (click)="service.loadPreset('config')">Config</button>
+        <button type="button" class="btn-preset" (click)="service.loadPreset('array')">Lista</button>
+        <button type="button" class="btn-preset" (click)="service.loadPreset('string')">Token</button>
+      </div>
+    </div>
+
+    <!-- Key Input -->
+    <div class="form-group">
+      <div class="label-row">
+        <label for="inputKey" class="form-label">Clave (Key):</label>
+        @if (service.keyExists() !== null) {
+          <span class="badge" [class.badge-blue]="service.keyExists()" [class.badge-yellow]="!service.keyExists()">
+            {{ service.keyExists() ? 'Existe en ' + service.selectedBackend() : 'No existe' }}
+          </span>
+        }
+      </div>
+      <div class="input-with-action">
+        <input
+          id="inputKey"
+          type="text"
+          class="input-control"
+          [ngModel]="service.inputKey()"
+          (ngModelChange)="service.setKey($event)"
+          placeholder="ej: usuario_actual, tema, sesion" />
+        <button
+          type="button"
+          class="btn-check"
+          (click)="service.handleHas()"
+          title="Verificar si la clave existe (has)">
+          has
+        </button>
+      </div>
+    </div>
+
+    <!-- Value Input -->
+    <div class="form-group">
+      <div class="label-row">
+        <label for="inputValue" class="form-label">Valor (Payload JSON o Texto):</label>
+        <button type="button" class="btn-text-action" (click)="service.formatJsonInput()">
+          Formatear JSON
+        </button>
+      </div>
+      <textarea
+        id="inputValue"
+        class="textarea-control"
+        rows="6"
+        [ngModel]="service.inputValue()"
+        (ngModelChange)="service.setValue($event)"
+        placeholder="Ingresa texto o un objeto JSON"></textarea>
+    </div>
+
+    <!-- Action Buttons (Sin iconos) -->
+    <div class="actions-grid">
+      <button
+        type="button"
+        class="btn btn-primary"
+        [disabled]="service.isOperating() || !service.inputKey()"
+        (click)="service.handleSet()">
+        set
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        [disabled]="service.isOperating() || !service.inputKey()"
+        (click)="service.handleGet()">
+        get
+      </button>
+      <button
+        type="button"
+        class="btn btn-warning"
+        [disabled]="service.isOperating() || !service.inputKey()"
+        (click)="service.handleRemove()">
+        remove
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger"
+        [disabled]="service.isOperating()"
+        (click)="service.handleClear()">
+        clear
+      </button>
+    </div>
+  </section>
+
+  <!-- Right Panel: Results & Activity -->
+  <div class="right-column">
+    <!-- Result Card -->
+    <section class="card panel-result">
+      <div class="card-header">
+        <div>
+          <h2>Resultado de la Operación</h2>
+          @if (service.lastStatus()) {
+            <p class="status-indicator">{{ service.lastStatus() }}</p>
+          } @else {
+            <p class="text-muted">Ejecuta una acción para visualizar la respuesta</p>
+          }
+        </div>
+      </div>
+
+      <div class="result-box">
+        @if (service.lastResult() !== null && service.lastResult() !== undefined) {
+          <div class="result-header">
+            <span class="badge badge-blue">Respuesta</span>
+            <span class="result-type">Tipo: {{ (service.lastResult() | json) ? 'Object/Array' : 'Primitivo' }}</span>
+          </div>
+          <pre class="code-view"><code>{{ formatData(service.lastResult()) }}</code></pre>
+        } @else {
+          <div class="empty-state">
+            <p>Sin datos actuales o valor devuelto es <code>null</code></p>
+            <p class="empty-hint">Usa <strong>get</strong> o <strong>set</strong> para interactuar.</p>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Real-Time Activity Log -->
+    <section class="card panel-logs">
+      <div class="card-header">
+        <div class="logs-header-left">
+          <h3>Historial de Operaciones</h3>
+          <span class="badge badge-dark">{{ service.logs().length }} eventos</span>
+        </div>
+        @if (service.logs().length > 0) {
+          <button type="button" class="btn-text-action" (click)="service.clearLogs()">Limpiar historial</button>
+        }
+      </div>
+
+      <div class="logs-container">
+        @if (service.logs().length === 0) {
+          <p class="logs-empty">No se han registrado operaciones en esta sesión.</p>
+        } @else {
+          <div class="logs-list">
+            @for (log of service.logs(); track log.id) {
+              <div class="log-item" [class.log-error]="log.status === 'error'">
+                <div class="log-meta">
+                  <span class="log-time">{{ log.timestamp }}</span>
+                  <span class="badge" [class.badge-blue]="log.backend === 'local'" [class.badge-yellow]="log.backend === 'cache'">
+                    {{ log.backend }}
+                  </span>
+                  <span class="log-action">.{{ log.action }}()</span>
+                  <span class="log-duration">{{ log.durationMs }}ms</span>
+                </div>
+                <div class="log-message">
+                  @if (log.key) {
+                    <span class="log-key">key: <strong>{{ log.key }}</strong></span> —
+                  }
+                  <span>{{ log.message }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+</div>

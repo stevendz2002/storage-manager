@@ -1,0 +1,63 @@
+<div class="demos-grid">
+  <!-- Demo 1: Contador Persistente -->
+  <section class="card demo-card">
+    <div class="demo-badge">LocalStorage</div>
+    <h3>Contador Persistente</h3>
+    <p class="text-muted">
+      Este contador guarda su estado directamente mediante <code>storageManager.set('local', 'showcase_contador', valor)</code>. Recarga la página y el número se mantendrá intacto.
+    </p>
+
+    <div class="counter-display">
+      <span class="counter-number">{{ service.counterValue() }}</span>
+    </div>
+
+    <div class="counter-controls">
+      <button type="button" class="btn btn-secondary" (click)="service.updateCounter(-1)">Restar</button>
+      <button type="button" class="btn btn-danger" (click)="service.resetCounter()">Reiniciar</button>
+      <button type="button" class="btn btn-primary" (click)="service.updateCounter(1)">Sumar</button>
+    </div>
+  </section>
+
+  <!-- Demo 2: Cache API Nativa -->
+  <section class="card demo-card">
+    <div class="demo-badge badge-blue-pill">CacheStorage</div>
+    <h3>Almacenamiento en Caché del Navegador</h3>
+    <p class="text-muted">
+      Usa la Web Cache API para persistir objetos serializados como respuestas sintéticas sin tocar LocalStorage.
+    </p>
+
+    <div class="cache-status-box">
+      <div class="status-row">
+        <span>Soporte en navegador:</span>
+        <span class="badge" [class.badge-blue]="service.cacheSupported()" [class.badge-red]="!service.cacheSupported()">
+          {{ service.cacheSupported() ? 'Disponible' : 'No disponible' }}
+        </span>
+      </div>
+      <div class="status-row">
+        <span>Bucket configurado:</span>
+        <code>ngxsm-showcase-cache</code>
+      </div>
+    </div>
+
+    <div class="demo-actions">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="runCacheDemo()">
+        Probar Guardado en Caché
+      </button>
+    </div>
+  </section>
+
+  <!-- Demo 3: Limpieza Aislada -->
+  <section class="card demo-card">
+    <div class="demo-badge">Seguridad de Namespace</div>
+    <h3>Aislamiento con Prefijo (<code>ngxsm:</code>)</h3>
+    <p class="text-muted">
+      La librería respeta las demás claves de tu aplicación. Al ejecutar <code>clear('local')</code>, solo se eliminan las claves que pertenecen al prefijo de la librería sin borrar datos ajenos de LocalStorage.
+    </p>
+    <div class="info-callout">
+      <span>Claves de otras librerías o de tu aplicación en <code>localStorage</code> permanecen completamente a salvo.</span>
+    </div>
+  </section>
+</div>
