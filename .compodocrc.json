@@ -1,0 +1,9 @@
+{
+  "tsconfig": "projects/ngx-storage-manager/tsconfig.lib.json",
+  "output": "docs/compodoc",
+  "name": "ngx-storage-manager",
+  "theme": "material",
+  "disableSourceCode": false,
+  "disableGraph": false,
+  "language": "es-ES"
+}

@@ -6,7 +6,7 @@
     "build": "ng build ngx-storage-manager",
     "test": "ng test ngx-storage-manager --watch=false",
     "coverage": "ng test ngx-storage-manager --watch=false --coverage",
-    "docs": "compodoc -p projects/ngx-storage-manager/tsconfig.lib.json -d documentation --name \"Storage Manager\""
+    "docs": "compodoc -p projects/ngx-storage-manager/tsconfig.lib.json -d docs/compodoc"
   },
   "private": true,
   "packageManager": "npm@11.10.1",
