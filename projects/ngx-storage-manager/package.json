@@ -1,6 +1,22 @@
 {
-  "name": "ngx-storage-manager",
-  "version": "0.0.1",
+  "name": "@andressaavedra01/ngx-storage-manager",
+  "version": "0.0.2",
+  "description": "Librería Angular para gestión unificada y tipada de almacenamiento (LocalStorage y CacheStorage).",
+  "keywords": [
+    "angular",
+    "storage",
+    "localstorage",
+    "cachestorage",
+    "cache-api",
+    "zoneless",
+    "storage-manager"
+  ],
+  "author": "Andres Saavedra <andressaavedra01>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stevendz2002/storage-manager.git"
+  },
   "peerDependencies": {
     "@angular/common": "^21.2.23",
     "@angular/core": "^21.2.23"

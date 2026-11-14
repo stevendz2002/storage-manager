@@ -8,6 +8,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "paths": {
+      "@andressaavedra01/ngx-storage-manager": ["./dist/ngx-storage-manager"],
       "ngx-storage-manager": ["./dist/ngx-storage-manager"]
     },
     "noFallthroughCasesInSwitch": true,
