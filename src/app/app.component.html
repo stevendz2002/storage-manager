@@ -1,0 +1,24 @@
+<div class="showcase-container">
+  <app-header />
+
+  <main class="showcase-content">
+    @switch (service.activeTab()) {
+      @case ('playground') {
+        <app-playground />
+      }
+      @case ('demos') {
+        <app-demos />
+      }
+      @case ('inspector') {
+        <app-inspector />
+      }
+      @case ('code') {
+        <app-code-guide />
+      }
+    }
+  </main>
+
+  <footer class="showcase-footer">
+    <p>ngx-storage-manager • Ejecutándose en modo watch & showcase modular</p>
+  </footer>
+</div>
